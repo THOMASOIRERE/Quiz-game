@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/859082229d.js" crossorigin="anonymous"></script>
+  <title>Quiz Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    #quiz-container {
+      max-width: 600px;
+      margin: auto;
+    }
+    #question {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .option {
+      margin: 5px;
+      padding: 10px;
+      width: 200px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .option:hover {
+      background-color: #f0f0f0;
+    }
+    #result {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .copyright{
+      width: 100%;
+      color: #ffff;
+      text-align: center;
+      padding: 25px 0;
+      background: #262626;
+      font-size: 18px;
+      font-weight:300;
+      margin-top:10px;
+      margin-bottom:0;
+      width: 100%;
+  }
+  .copyright i{
+      color:red;
+  }
+  
+  </style>
+</head>
+<body>
+
+  <div id="quiz-container">
+    <div id="question"></div>
+    <div class="options" id="options-container"></div>
+    <div id="result"></div>
+    <button onclick="nextQuestion()" id="next-btn" style="display:none;">Next Question</button>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "What is the capital of France?",
+        options: ["Berlin", "Madrid", "Paris", "Rome"],
+        correctAnswer: "Paris"
+      },
+      {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Venus", "Mars", "Jupiter", "Saturn"],
+        correctAnswer: "Mars"
+      },
+      {
+        question: "What is the largest mammal in the world?",
+        options: ["Elephant", "Whale Shark", "Blue Whale", "Giraffe"],
+        correctAnswer: "Blue Whale"
+      }
+      // Add more questions as needed
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const questionElement = document.getElementById("question");
+    const optionsContainer = document.getElementById("options-container");
+    const resultElement = document.getElementById("result");
+    const nextButton = document.getElementById("next-btn");
+
+    function startQuiz() {
+      nextQuestion();
+    }
+
+    function nextQuestion() {
+      if (currentQuestionIndex < quizData.length) {
+        const currentQuestion = quizData[currentQuestionIndex];
+        displayQuestion(currentQuestion);
+        displayOptions(currentQuestion.options);
+        resultElement.textContent = "";
+        nextButton.style.display = "none";
+      } else {
+        endQuiz();
+      }
+    }
+
+    function displayQuestion(question) {
+      questionElement.textContent = question.question;
+    }
+
+    function displayOptions(options) {
+      optionsContainer.innerHTML = "";
+      for (const option of options) {
+        const optionElement = document.createElement("div");
+        optionElement.className = "option";
+        optionElement.textContent = option;
+        optionElement.onclick = () => checkAnswer(option);
+        optionsContainer.appendChild(optionElement);
+      }
+    }
+
+    function checkAnswer(selectedOption) {
+      const currentQuestion = quizData[currentQuestionIndex];
+      if (selectedOption === currentQuestion.correctAnswer) {
+        score++;
+        resultElement.textContent = "Correct!";
+      } else {
+        resultElement.textContent = `Wrong! The correct answer is: ${currentQuestion.correctAnswer}`;
+      }
+
+      nextButton.style.display = "block";
+      currentQuestionIndex++;
+    }
+
+    function endQuiz() {
+      questionElement.textContent = "Quiz completed!";
+      optionsContainer.innerHTML = "";
+      resultElement.textContent = `Your score: ${score} out of ${quizData.length}`;
+      nextButton.style.display = "none";
+    }
+
+    startQuiz();
+  </script>
+  <div class="copyright">
+    <p>Copyright &#169 2024 Made With <i class="fa-solid fa-heart"></i> by Thomas Oirere</p>
+</div>
+</body>
+</html>
